@@ -87,7 +87,7 @@ When the side tag was merged, send another email to mailing lists:
 https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/message/OHZEB6OSWUNPO4QZZXXOZPSICCPRXW2X/
 ~~~~
 
-Also [set new](https://src.fedoraproject.org/rpms/python3.10/pull-request/58) main Python and [remove](https://src.fedoraproject.org/rpms/python3.9/pull-request/71) the old one from Fedora CI
+Also [set new](https://src.fedoraproject.org/rpms/python3.10/pull-request/58) main Python and [remove](https://src.fedoraproject.org/rpms/python3.9/pull-request/71) the old one from Fedora CI.
 
 mhronock opened bugzillas for all remaining packages that failed to build with Python 3.10. Using these scripts:
 
@@ -100,3 +100,5 @@ With merged side tag use this command to generate `todo.pkgs`:
 ~~~~
 repoquery --refresh --repo=koji --source --whatrequires 'libpython3.9.so.1.0()(64bit)' --whatrequires 'python(abi) = 3.9' --whatrequires 'python3.9dist(*)' | pkgname | env LANG=en_US.utf-8 sort | uniq > python39.pkgs && repoquery --repo=koji --source --whatrequires 'libpython3.10.so.1.0()(64bit)' --whatrequires 'python(abi) = 3.10' --whatrequires 'python3.10dist(*)' | pkgname | env LANG=en_US.utf-8 sort | uniq > python310.pkgs && env LANG=en_US.utf-8 comm -23 python39.pkgs python310.pkgs | grep -E -v '^python3\.9$' > todo.pkgs && wc -l python39.pkgs python310.pkgs todo.pkgs
 ~~~~
+
+At the very last, disable webhook rebuilds in COPR - https://pagure.io/copr/copr/issue/1972.
